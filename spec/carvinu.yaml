@@ -1,0 +1,201 @@
+openapi: 3.0.0
+info:
+  title: Carvinu Cars API
+  version: 1.0.0
+servers:
+  - url: '{protocol}://{server}:{port}{basePath}'
+    description: Open API
+    variables:
+      protocol:
+        enum:
+          - 'http'
+          - 'https'
+        default: 'http'
+      server:
+        default: 'localhost'
+      port:
+        enum:
+          - '8095'
+          - '443'
+        default: '8095'
+      basePath:
+        enum:
+          - ''
+        default: ''
+tags:
+  - name: user-managment
+paths:
+  /login:
+    post:
+      tags:
+        - user-managment
+      operationId: loginUser
+      summary: User login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        '200':
+          description: User login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '401':
+          description: Unauthorized - Invalid credentials
+          content:
+            application/json:
+              example:
+                error: Invalid credentials
+        '400':
+          description: Invalid request or validation error
+          content:
+            application/json:
+              example:
+                error: Invalid input
+  /register:
+    post:
+      tags:
+        - user-managment
+      operationId: registerUser
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        '200':
+          description: User registration successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '400':
+          description: Invalid request or validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+
+  /edit-profile:
+    post:
+      tags:
+        - user-managment
+      operationId: editUserProfile
+      summary: Edit User Profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        '200':
+          description: User Profile edit successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '400':
+          description: Invalid request or validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /verify-otp:
+    post:
+      tags:
+        - user-managment
+      operationId: verifyOTP
+      summary: Verify OTP for user registration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OTPRequest'
+      responses:
+        '200':
+          description: User registration successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '400':
+          description: Invalid request or OTP verification failed
+          content:
+            application/json:
+              example:
+                error: Invalid OTP
+
+components:
+  schemas:
+    UserRequest:
+      required:
+        - mobileNumber
+        - name
+        - password
+      type: object
+      properties:
+        mobileNumber:
+          type: string
+          pattern: '^\d{10}$'
+          description: User's mobile number (10 digits)
+        address:
+          type: string
+          description: User's address
+        email:
+          type: string
+          pattern: '^[\w\.-]+@[a-zA-Z\d\.-]+\.[a-zA-Z]{2,}$'
+          example: user@example.com
+          description: User's email address
+        name:
+          type: string
+          description: User's name
+        password:
+          type: string
+          description: User's password
+
+    UserResponse:
+      type: object
+      properties:
+        mobileNumber:
+          type: string
+          description: User's mobile number
+        address:
+          type: string
+          description: User's address
+        email:
+          type: string
+          description: User's email address
+        name:
+          type: string
+          description: User's name
+
+    OTPRequest:
+      required:
+        - mobileNumber
+        - otpToken
+      type: object
+      properties:
+        mobileNumber:
+          type: string
+          pattern: '^\d{10}$'
+          description: User's mobile number (10 digits)
+        otpToken:
+          type: string
+          description: SMS code received by the user
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message

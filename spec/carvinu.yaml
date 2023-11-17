@@ -175,6 +175,9 @@ components:
         email:
           type: string
           description: User's email address
+        status:
+          type: string
+          description: User's status
         name:
           type: string
           description: User's name

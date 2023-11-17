@@ -20,7 +20,11 @@ public class UserManagmentController implements UserManagmentApi {
 
     @Override
     public ResponseEntity<UserResponseDTO> loginUser(UserRequestDTO userRequestDTO) {
-        return null;
+        try {
+            return ResponseEntity.ok(userManagmentService.loginUser(userRequestDTO));
+        } catch (UserManagmentException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -34,7 +38,11 @@ public class UserManagmentController implements UserManagmentApi {
 
     @Override
     public ResponseEntity<UserResponseDTO> editUserProfile(UserRequestDTO userRequestDTO) {
-        return null;
+        try {
+            return ResponseEntity.ok(userManagmentService.editUserProfile(userRequestDTO));
+        } catch (UserManagmentException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

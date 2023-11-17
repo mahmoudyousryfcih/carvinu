@@ -11,4 +11,7 @@ public interface UserManagmentService {
 
     UserResponseDTO verifyOTP(OTPRequestDTO otPRequestDTO) throws UserManagmentException;
 
+    UserResponseDTO editUserProfile(UserRequestDTO userRequestDTO) throws UserManagmentException;
+
+    UserResponseDTO loginUser(UserRequestDTO userRequestDTO) throws UserManagmentException;
 }

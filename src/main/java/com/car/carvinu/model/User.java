@@ -45,6 +45,9 @@ public class User implements Serializable {
     @Column(name = "modified_date")
     private Date modifiedDate;
 
+    @Column(name = "last_login_date")
+    private Date lastLoginDate;
+
     @Override
     public String toString() {
         return super.toString();
